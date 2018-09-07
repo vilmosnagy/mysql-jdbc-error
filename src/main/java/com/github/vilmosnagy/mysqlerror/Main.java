@@ -11,12 +11,14 @@ import java.util.UUID;
 
 public class Main {
 
-    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/test?useUnicode=true";
+    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci";
 
     public static void main(String[] args) throws Exception {
         Driver driver = DriverManager.getDriver(jdbcUrl);
         Connection connection = DriverManager.getConnection(jdbcUrl, "test", "test");
         PreparedStatement psmt = connection.prepareStatement("insert into foobar (id, author, updated_time, content) values (?, ?, ?, ?)");
+        psmt.executeQuery("SET NAMES utf8mb4");
+        psmt.executeQuery("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
         psmt.setString(1, UUID.randomUUID().toString());
         psmt.setString(2, "árvíztűrő tükörfúrógép");
         psmt.setDate(3, Date.valueOf(LocalDate.now()));
